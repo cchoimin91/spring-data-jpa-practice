@@ -33,4 +33,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Page<Member> findByAge(int age , Pageable pageable);
 
+    @Query(value = "select m from Member m left join m.team"
+    , countQuery = "select count(m) from Member m") // 카운트쿼리는 조인 불필요 성능 최적화
+    Page<Member> findByAge2(int age , Pageable pageable);
+
 }

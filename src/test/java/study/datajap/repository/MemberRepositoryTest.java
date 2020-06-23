@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import study.datajap.dto.MemberDto;
 import study.datajap.entity.Member;
@@ -114,9 +115,19 @@ class MemberRepositoryTest {
         for (Member member : content) {
             System.out.println("member = " + member);
         }
-        
+
         long totalCount = page.getTotalElements();
         System.out.println("totalCount = " + totalCount);
+
+        /**
+         * 모바일 디바이스에 많이씀 (더보기..)
+         * total count 쿼리 안날림
+         * size+1로 가져옴 =
+         */
+        Slice<Member> page2 = memberRepository.findByAge(age, pageRequest);
+
+        // entity그대로 반환하지말고 DTO로 반환할 것
+        Page<MemberDto> toMap = page.map(member -> new MemberDto(member.getId(), member.getUsername(), null));
 
         assertThat(content.size()).isEqualTo(3);
         assertThat(page.getTotalElements()).isEqualTo(6);
