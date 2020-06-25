@@ -7,9 +7,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 import study.datajap.dto.MemberDto;
 import study.datajap.entity.Member;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +21,17 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Transactional
+@Rollback(false)
 @SpringBootTest
 class MemberRepositoryTest {
 
-    @Autowired MemberRepository memberRepository;
+    @Autowired
+    MemberRepository memberRepository;
+
+    @PersistenceContext
+    EntityManager em;
+
 
     @Test
     public void test(){
@@ -134,6 +145,24 @@ class MemberRepositoryTest {
         assertThat(page.getNumber()).isEqualTo(1);
         assertThat(page.isFirst()).isFalse();
         assertThat(page.hasNext()).isFalse();
+    }
+
+
+    @Test
+    public void bulkQuery(){
+        System.out.println("=======================");
+        memberRepository.save(new Member("a", 10));
+        memberRepository.save(new Member("b", 11));
+        memberRepository.save(new Member("c", 12));
+        memberRepository.save(new Member("d", 13));
+
+        //em.flush();
+        //em.clear();
+        //List<Member> members = memberRepository.findByUsername("a");
+
+        int resultCount = memberRepository.bulkAgeplus(12);
+
+        assertThat(resultCount).isEqualTo(2);
     }
 
 
