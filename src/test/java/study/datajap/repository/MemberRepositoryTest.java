@@ -11,6 +11,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import study.datajap.dto.MemberDto;
 import study.datajap.entity.Member;
+import study.datajap.entity.Team;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,6 +29,9 @@ class MemberRepositoryTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    TeamRepository teamRepository;
 
     @PersistenceContext
     EntityManager em;
@@ -163,6 +167,29 @@ class MemberRepositoryTest {
         int resultCount = memberRepository.bulkAgeplus(12);
 
         assertThat(resultCount).isEqualTo(2);
+    }
+
+    @Test
+    public void entityGraph(){
+        System.out.println("=======================");
+
+        Team teamA = new Team("teamA");
+        Team teamB = new Team("teamB");
+        teamRepository.save(teamA);
+        teamRepository.save(teamB);
+
+        memberRepository.save(new Member("a", 10));
+        memberRepository.save(new Member("b", 11));
+
+        em.flush();
+        em.clear();
+
+        List<Member> members  = memberRepository.findMemberEntityGraph();
+        for (Member member : members) {
+            System.out.println("member = " + member);
+            System.out.println("member>team>name = " + member.getTeam().getName());
+        }
+
     }
 
 

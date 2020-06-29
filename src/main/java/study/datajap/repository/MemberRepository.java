@@ -2,6 +2,7 @@ package study.datajap.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -42,5 +43,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Modifying(clearAutomatically = true) // excuteUpdate() 호출함, 영속성에 주의한다.  clearAutomatically=true-> clear()를 자동으로 해줌
     @Query("update Member m set m.age=m.age+1 where m.age>= :age")
     int bulkAgeplus(@Param("age") int age);
+
+    @EntityGraph(attributePaths = {"team"})
+    @Query("select m from Member ")
+    List<Member> findMemberEntityGraph();
 
 }
