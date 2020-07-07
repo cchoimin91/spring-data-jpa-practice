@@ -36,8 +36,6 @@ class MemberRepositoryTest {
     @PersistenceContext
     EntityManager em;
 
-    @Autowired
-    MemberRepositoryCustom memberRepositoryCustom;
 
 
     @Test
@@ -209,7 +207,7 @@ class MemberRepositoryTest {
 
     @Test
     public void callCustom(){
-        List<Member> result = memberRepositoryCustom.findMemberCustom();
+        List<Member> result = memberRepository.findMemberCustom();
     }
 
 
