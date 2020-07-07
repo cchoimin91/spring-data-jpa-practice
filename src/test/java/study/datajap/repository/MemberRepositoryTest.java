@@ -36,6 +36,9 @@ class MemberRepositoryTest {
     @PersistenceContext
     EntityManager em;
 
+    @Autowired
+    MemberRepositoryCustom memberRepositoryCustom;
+
 
     @Test
     public void test(){
@@ -189,7 +192,24 @@ class MemberRepositoryTest {
             System.out.println("member = " + member);
             System.out.println("member>team>name = " + member.getTeam().getName());
         }
+    }
 
+    @Test
+    public void queryHint(){
+        System.out.println("========================================");
+        Member member1 = new Member("aaa", 10);
+        memberRepository.save(member1);
+        em.flush();
+        em.clear();
+
+        Member findMember = memberRepository.findReadOnlyByUsername("aaa");
+        findMember.setUsername("bbb"); //update 안됨
+        em.flush();
+    }
+
+    @Test
+    public void callCustom(){
+        List<Member> result = memberRepositoryCustom.findMemberCustom();
     }
 
 
