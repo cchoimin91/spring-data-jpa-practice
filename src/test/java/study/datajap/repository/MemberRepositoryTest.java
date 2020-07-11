@@ -15,6 +15,7 @@ import study.datajap.entity.Team;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -209,6 +210,31 @@ class MemberRepositoryTest {
     public void callCustom(){
         List<Member> result = memberRepository.findMemberCustom();
     }
+
+    @Test
+    public void JpaEventBaseEntity() throws Exception{
+        System.out.println("#############################");
+
+        Member member = new Member("민");
+        memberRepository.save(member); // @Prepersist 작동
+        LocalDateTime before = member.getUpdateDate();
+
+        Thread.sleep(3000);
+
+        member.setAge(1);
+
+        em.flush(); //@PreUpdate 작동
+        em.clear();
+
+        Member findMember = memberRepository.findById(member.getId()).get();
+        System.out.println(">>>>> findMember.getRegDate = " + findMember.getRegDate());
+        System.out.println(">>>>> findMember.getUpdateDate = " + findMember.getUpdateDate());
+        System.out.println(">>>>> beforeUpdateDate= " + before);
+        System.out.println(">>>>> beforeUpdateDate= " + before);
+        System.out.println(">>>>> findMember.regUserId= " + findMember.getRegUserId());
+        System.out.println(">>>>> findMember.updateUserId= " + findMember.getUpdateUserId());
+    }
+
 
 
 }

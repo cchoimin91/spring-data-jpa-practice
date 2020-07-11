@@ -8,7 +8,9 @@ import javax.persistence.*;
 @Setter @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "username", "age"})
-public class Member {
+public class Member extends  BaseEntity
+//extends JpaBaseEntity 순수JPA사용시
+{
 
     @Id @GeneratedValue
     private long id;
