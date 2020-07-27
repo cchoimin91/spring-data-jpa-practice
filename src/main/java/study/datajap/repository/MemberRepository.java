@@ -61,6 +61,8 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
     @QueryHints(value = @QueryHint(name = "org.hibernate.readOnly", value = "true"))
     Member findReadOnlyByUsername(String username);
 
+    List<UsernameOnly> findProjectionsByUsername(@Param("username") String username);
 
+    List<UsernameOnly> findProjections2ByUsername(@Param("username") String username);
 
 }

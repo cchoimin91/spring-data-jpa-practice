@@ -235,6 +235,30 @@ class MemberRepositoryTest {
         System.out.println(">>>>> findMember.updateUserId= " + findMember.getUpdateUserId());
     }
 
+    @Test
+    public void projections(){
+        System.out.println("=======================");
 
+        memberRepository.save(new Member("a", 10));
+        memberRepository.save(new Member("a", 10));
+        memberRepository.save(new Member("b", 11));
+
+        em.flush();
+        em.clear();
+
+        //proxy
+        List<UsernameOnly> result = memberRepository.findProjectionsByUsername("a");
+
+        for (UsernameOnly usernameOnly : result) {
+            System.out.println("usernameOnly = " + usernameOnly.getUsername());
+        }
+
+        //proxy
+        List<UsernameOnly> result2 = memberRepository.findProjections2ByUsername("a");
+
+        for (UsernameOnly usernameOnly : result2) {
+            System.out.println("usernameOnly.getUsernameAndAge() = " + usernameOnly.getUsernameAndAge());
+        }
+    }
 
 }
