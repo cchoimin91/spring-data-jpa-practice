@@ -261,4 +261,17 @@ class MemberRepositoryTest {
         }
     }
 
+    @Test
+    public void nativeQuery() {
+        System.out.println("=======================");
+
+        memberRepository.save(new Member("a", 10));
+
+        em.flush();
+        em.clear();
+
+        Member member  = memberRepository.findByNativeQuery("a");
+        System.out.println("member = " + member);
+    }
+
 }
