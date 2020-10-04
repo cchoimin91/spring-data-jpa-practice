@@ -36,9 +36,9 @@ spring data jpa 학습
 7-1. 새로운 엔티티구별하는 방법
 
 8. 나머지 기능들  
-8-1. Speccifications
-8-2. Projections
-8-3. 네이티브쿼리
+8-1. Speccifications  
+8-2. Projections  
+8-3. 네이티브쿼리  
 
 
 
