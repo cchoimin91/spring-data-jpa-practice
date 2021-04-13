@@ -1,6 +1,7 @@
 package study.datajap.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -9,21 +10,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import study.datajap.dto.MemberDto;
 import study.datajap.entity.Member;
+import study.datajap.entity.Team;
 import study.datajap.repository.MemberRepository;
+import study.datajap.repository.TeamRepository;
 
 import javax.annotation.PostConstruct;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class MemberController {
 
     private final MemberRepository memberRepository;
 
+    private final TeamRepository teamRepository;
 
-
-   // @PostConstruct
+    @PostConstruct
     public void init(){
-        for(int i=0 ; i<100 ; i++){
+        log.info("데이터 입력중...");
+        for(int i=0 ; i<30 ; i++){
+            teamRepository.save(new Team("팀"+i));
             memberRepository.save(new Member("민"+i, i));
         }
     }

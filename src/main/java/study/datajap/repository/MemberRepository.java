@@ -20,7 +20,7 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
     @Query("select m from Member  m where m.username=:username and m.age =:age")
     List<Member> findByUsernameQueryAnnotation(@Param("username") String username, @Param("age") int age);
 
-    @Query("select new study.datajap.dto.MemberDto(m.id, m.username, t.name) from Member m join m.team t  ")
+    @Query("select new study.datajap.dto.MemberDto(m.id, m.username, t.name) from Member m left join  m.team t  ")
     List<MemberDto> findMemberDto();
 
     @Query("select m from Member m where m.username in :names")

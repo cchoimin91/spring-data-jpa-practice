@@ -38,31 +38,32 @@ class MemberRepositoryTest {
     EntityManager em;
 
 
-
     @Test
     public void test(){
-        System.out.println("===========");
-        List<Member> members = memberRepository.findByUsername("aaaa");
+        List<Member> members = memberRepository.findByUsername("민0");
+        assertThat(members).extracting("username").containsExactly("민0");
     }
 
     @Test
     public void testQueryAnnotation(){
-        System.out.println("===========");
-        List<Member> members = memberRepository.findByUsernameQueryAnnotation("member1", 10);
+        List<Member> members = memberRepository.findByUsernameQueryAnnotation("민0", 0);
+        assertThat(members.size()).isEqualTo(1);
     }
 
+    /**
+     * DTO로 반환하기
+     */
     @Test
     public void testGetDto(){
-        System.out.println("===========");
         List<MemberDto> members = memberRepository.findMemberDto();
         for (MemberDto member : members) {
             System.out.println("member = " + member);
         }
+        assertThat(members.size()).isEqualTo(30);
     }
 
     @Test
     public void testQueryIn(){
-        System.out.println("===========");
 
         Member m1 = new Member("민", 10);
         Member m2 = new Member("두", 20);
@@ -74,6 +75,7 @@ class MemberRepositoryTest {
         for (Member userName : userNames) {
             System.out.println("userName = " + userName);
         }
+
     }
 
     @Test
